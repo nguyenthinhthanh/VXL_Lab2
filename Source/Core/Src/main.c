@@ -59,6 +59,7 @@ void clearAllRows(void);
 void clearAllColums(void);
 void enableColums(int index, int state);
 void setColums(uint8_t number);
+void updateLEDMatrix(int index);
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim);
 /* USER CODE END PFP */
 
@@ -73,7 +74,7 @@ int hour = 15, minute = 8, second = 50;
 
 const int MAX_LED_MATRIX = 8;
 int index_led_matrix = 0;
-uint8_t matrix_buffer[8] = {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08};
+uint8_t matrix_buffer[8] = {0x3C, 0x42, 0x42, 0x7E, 0x42, 0x42, 0x42, 0x00};
 
 void  display7SEG(int number){
 	if(number == 0){
@@ -307,6 +308,41 @@ void setColums(uint8_t number){
 	}
 }
 
+void updateLEDMatrix(int index){
+	clearAllRows();
+	clearAllColums();
+	switch(index){
+	case 0:
+		HAL_GPIO_WritePin(ROW0_GPIO_Port, ROW0_Pin, GPIO_PIN_SET);
+		break;
+	case 1:
+		HAL_GPIO_WritePin(ROW1_GPIO_Port, ROW1_Pin, GPIO_PIN_SET);
+		break;
+	case 2:
+		HAL_GPIO_WritePin(ROW2_GPIO_Port, ROW2_Pin, GPIO_PIN_SET);
+		break;
+	case 3:
+		HAL_GPIO_WritePin(ROW3_GPIO_Port, ROW3_Pin, GPIO_PIN_SET);
+		break;
+	case 4:
+		HAL_GPIO_WritePin(ROW4_GPIO_Port, ROW4_Pin, GPIO_PIN_SET);
+		break;
+	case 5:
+		HAL_GPIO_WritePin(ROW5_GPIO_Port, ROW5_Pin, GPIO_PIN_SET);
+		break;
+	case 6:
+		HAL_GPIO_WritePin(ROW6_GPIO_Port, ROW6_Pin, GPIO_PIN_SET);
+		break;
+	case 7:
+		HAL_GPIO_WritePin(ROW7_GPIO_Port, ROW7_Pin, GPIO_PIN_SET);
+		break;
+	default:
+		break;
+	}
+
+	setColums(matrix_buffer[index]);
+}
+
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 	runTimer();
 }
@@ -349,9 +385,14 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  int Time_Matrix = 20;
+
   setTimer(0, 250);
   setTimer(1, 1000);
   setTimer(2, 1000); /*1000ms for delay*/
+  setTimer(3, Time_Matrix);
+
+  clearAllRows();
 
   updateClockBuffer();
 
@@ -395,6 +436,14 @@ int main(void)
 		 updateClockBuffer();
 		 setTimer(2, 1000);
 	}
+
+	 if(Timer_Flag[3]){
+		updateLEDMatrix(index_led_matrix++);
+		if(index_led_matrix >= MAX_LED_MATRIX){
+			index_led_matrix = 0;
+		}
+		setTimer(3, Time_Matrix);
+	 }
 
     /* USER CODE END WHILE */
 
