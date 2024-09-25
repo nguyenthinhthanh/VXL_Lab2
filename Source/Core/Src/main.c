@@ -22,6 +22,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "Timer.h"
+#include "stdbool.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -75,6 +76,7 @@ int hour = 15, minute = 8, second = 50;
 const int MAX_LED_MATRIX = 8;
 int index_led_matrix = 0;
 uint8_t matrix_buffer[8] = {0x3C, 0x42, 0x42, 0x7E, 0x42, 0x42, 0x42, 0x00};
+uint8_t matrix_buffser_old[8] = {0x3C, 0x42, 0x42, 0x7E, 0x42, 0x42, 0x42, 0x00};
 
 void  display7SEG(int number){
 	if(number == 0){
@@ -343,6 +345,27 @@ void updateLEDMatrix(int index){
 	setColums(matrix_buffer[index]);
 }
 
+void shiftLeft(uint8_t* Matrix){
+	for(int i=0;i<MAX_LED_MATRIX;i++){
+		Matrix[i] = Matrix[i] << 1;
+	}
+}
+
+bool isemptyMatrix(uint8_t* Matrix){
+	for(int i=0;i<MAX_LED_MATRIX;i++){
+		if(Matrix[i] != 0){
+			return false;
+		}
+	}
+
+	return true;
+}
+void resetMatrix(){
+	for(int i=0;i<MAX_LED_MATRIX;i++){
+		matrix_buffer[i] = matrix_buffser_old[i];
+	}
+}
+
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 	runTimer();
 }
@@ -391,6 +414,7 @@ int main(void)
   setTimer(1, 1000);
   setTimer(2, 1000); /*1000ms for delay*/
   setTimer(3, Time_Matrix);
+  setTimer(4, 300);  /*300ms for led animation*/
 
   clearAllRows();
 
@@ -443,6 +467,14 @@ int main(void)
 			index_led_matrix = 0;
 		}
 		setTimer(3, Time_Matrix);
+	 }
+
+	 if(Timer_Flag[4]){
+		 shiftLeft(matrix_buffer);
+		 if(isemptyMatrix(matrix_buffer)){
+			 resetMatrix();
+		 }
+		 setTimer(4, 300);
 	 }
 
     /* USER CODE END WHILE */
