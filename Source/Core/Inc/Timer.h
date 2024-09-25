@@ -8,12 +8,12 @@
 #ifndef INC_TIMER_H_
 #define INC_TIMER_H_
 
-#define MAX_TIMER		1
+#define MAX_TIMER	1
 
-int TIMER_CYCLE = 10;
+extern int TIMER_CYCLE;
 
-int Timer_Counter[MAX_TIMER];
-int Timer_Flag[MAX_TIMER];
+extern int Timer_Counter[MAX_TIMER];
+extern int Timer_Flag[MAX_TIMER];
 
 void setTimer(int index, int duration);
 

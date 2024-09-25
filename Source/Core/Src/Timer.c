@@ -8,6 +8,12 @@
 #include "Timer.h"
 
 
+
+int TIMER_CYCLE = 10;
+
+int Timer_Counter[MAX_TIMER];
+int Timer_Flag[MAX_TIMER];
+
 void setTimer(int index, int duration){
 	Timer_Counter[index] = duration/TIMER_CYCLE;
 	Timer_Flag[index] = 0;
