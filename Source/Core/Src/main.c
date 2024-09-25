@@ -53,10 +53,15 @@ static void MX_TIM2_Init(void);
 /* USER CODE BEGIN PFP */
 void  display7SEG(int number);
 void enable7SEG(int index);
+void update7SEG(int index);
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+const int MAX_LED = 4;
+
+int led_buffer[4] = {1,2,3,4};
 int index_led = 0;
 
 void  display7SEG(int number){
@@ -186,6 +191,29 @@ void enable7SEG(int index){
 	}
 	else{
 
+	}
+}
+
+void update7SEG(int index){
+	switch(index){
+	case 0:
+		enable7SEG(index);
+		display7SEG(led_buffer[index]);
+		break;
+	case 1:
+		enable7SEG(index);
+		display7SEG(led_buffer[index]);
+		break;
+	case 2:
+		enable7SEG(index);
+		display7SEG(led_buffer[index]);
+		break;
+	case 3:
+		enable7SEG(index);
+		display7SEG(led_buffer[index]);
+		break;
+	default:
+		break;
 	}
 }
 
