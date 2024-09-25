@@ -267,7 +267,7 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  setTimer(0, 500);
+  setTimer(0, 250);
   setTimer(1, 1000);
 
   HAL_TIM_Base_Start_IT(&htim2);
@@ -279,7 +279,7 @@ int main(void)
 			index_led = 0;
 		}
 
-		setTimer(0, 500);
+		setTimer(0, 250);
 	}
 
 	if(Timer_Flag[1]){
