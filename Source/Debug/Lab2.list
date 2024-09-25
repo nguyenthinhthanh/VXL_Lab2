@@ -932,6 +932,7 @@ int main(void)
  8000736:	f001 f949 	bl	80019cc <HAL_TIM_Base_Start_IT>
   while (1)
   {
+	/*I done Exercise 6 because SoftWare Timer had done before*/
 	if(Timer_Flag[0]){
  800073a:	4b2b      	ldr	r3, [pc, #172]	@ (80007e8 <main+0xe8>)
  800073c:	681b      	ldr	r3, [r3, #0]

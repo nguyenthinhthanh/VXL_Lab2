@@ -287,6 +287,7 @@ int main(void)
   HAL_TIM_Base_Start_IT(&htim2);
   while (1)
   {
+	/*I done Exercise 6 because SoftWare Timer had done before*/
 	if(Timer_Flag[0]){
 		update7SEG(index_led++);
 		if(index_led >= MAX_LED){
