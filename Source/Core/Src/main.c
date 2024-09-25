@@ -268,6 +268,7 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   setTimer(0, 500);
+  setTimer(1, 1000);
 
   HAL_TIM_Base_Start_IT(&htim2);
   while (1)
@@ -279,6 +280,11 @@ int main(void)
 		}
 
 		setTimer(0, 500);
+	}
+
+	if(Timer_Flag[1]){
+		HAL_GPIO_TogglePin(DOT_GPIO_Port, DOT_Pin);
+		setTimer(1, 1000);
 	}
 
     /* USER CODE END WHILE */
@@ -385,14 +391,17 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, EN0_Pin|EN1_Pin|EN2_Pin|EN3_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, DOT_Pin|EN0_Pin|EN1_Pin|EN2_Pin
+                          |EN3_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, SEG_A_Pin|SEG_B_Pin|SEG_C_Pin|SEG_D_Pin
                           |SEG_E_Pin|SEG_F_Pin|SEG_G_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pins : EN0_Pin EN1_Pin EN2_Pin EN3_Pin */
-  GPIO_InitStruct.Pin = EN0_Pin|EN1_Pin|EN2_Pin|EN3_Pin;
+  /*Configure GPIO pins : DOT_Pin EN0_Pin EN1_Pin EN2_Pin
+                           EN3_Pin */
+  GPIO_InitStruct.Pin = DOT_Pin|EN0_Pin|EN1_Pin|EN2_Pin
+                          |EN3_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
