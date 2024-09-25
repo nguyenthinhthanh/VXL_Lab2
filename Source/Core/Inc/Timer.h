@@ -8,7 +8,7 @@
 #ifndef INC_TIMER_H_
 #define INC_TIMER_H_
 
-#define MAX_TIMER	3
+#define MAX_TIMER	4
 
 extern int TIMER_CYCLE;
 
