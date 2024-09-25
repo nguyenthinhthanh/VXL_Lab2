@@ -288,6 +288,7 @@ int main(void)
   while (1)
   {
 	/*I done Exercise 6 because SoftWare Timer had done before*/
+	/* I done Exercise 7 because I had done it in Exercise6*/
 	if(Timer_Flag[0]){
 		update7SEG(index_led++);
 		if(index_led >= MAX_LED){
