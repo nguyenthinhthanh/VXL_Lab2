@@ -54,6 +54,7 @@ static void MX_TIM2_Init(void);
 void  display7SEG(int number);
 void enable7SEG(int index);
 void update7SEG(int index);
+void updateClockBuffer(void);
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim);
 /* USER CODE END PFP */
 
@@ -63,6 +64,8 @@ const int MAX_LED = 4;
 
 int led_buffer[4] = {1,2,3,4};
 int index_led = 0;
+
+int hour = 15, minute = 8, second = 50;
 
 void  display7SEG(int number){
 	if(number == 0){
@@ -225,6 +228,14 @@ void update7SEG(int index){
 	}
 }
 
+void updateClockBuffer(void){
+    led_buffer[0] = hour / 10;
+    led_buffer[1] = hour % 10;
+
+    led_buffer[2] = minute / 10;
+    led_buffer[3] = minute % 10;
+}
+
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 	runTimer();
 }
@@ -269,6 +280,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   setTimer(0, 250);
   setTimer(1, 1000);
+
 
   HAL_TIM_Base_Start_IT(&htim2);
   while (1)
