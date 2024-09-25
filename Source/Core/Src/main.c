@@ -280,7 +280,9 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   setTimer(0, 250);
   setTimer(1, 1000);
+  setTimer(2, 1000); /*1000ms for delay*/
 
+  updateClockBuffer();
 
   HAL_TIM_Base_Start_IT(&htim2);
   while (1)
@@ -297,6 +299,27 @@ int main(void)
 	if(Timer_Flag[1]){
 		HAL_GPIO_TogglePin(DOT_GPIO_Port, DOT_Pin);
 		setTimer(1, 1000);
+	}
+
+	if(Timer_Flag[2]){
+		 second = second + 1;
+
+		 if(second >= 60){
+			 minute = minute + 1;
+			 second = 0;
+		 }
+
+		 if(minute >= 60){
+			 hour = hour + 1;
+			 minute = 0;
+		 }
+
+		 if(hour >= 24){
+			 hour = 0;
+		 }
+
+		 updateClockBuffer();
+		 setTimer(2, 1000);
 	}
 
     /* USER CODE END WHILE */
